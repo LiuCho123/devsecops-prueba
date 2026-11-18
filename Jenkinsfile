@@ -13,11 +13,11 @@ pipeline {
             }
         }
 
-        stage('Test') {
-            steps {
-                bat 'python -m py_compile app.py'
-            }
-        }
+    stage('Test') {
+         steps {
+             bat 'docker run --rm %APP_NAME% python -m py_compile app.py'
+         }
+     }
 
         stage('Analyze') {
             steps {
