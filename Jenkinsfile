@@ -41,7 +41,7 @@ pipeline {
             steps {
                 // 1. OWASP Dependency-Check
                 catchError(buildResult: 'SUCCESS', stageResult: 'UNSTABLE') {
-                    dependencyCheck additionalArguments: '--scan ./ --format HTML', odcInstallation: 'DP-Check'
+                    dependencyCheck additionalArguments: '--scan ./ --format HTML --nvdApiKey 130DF82C-ACE3-F111-837A-0EBF96DE670D', odcInstallation: 'DP-Check'
                 }
 
                 // 2. OWASP ZAP (escaneo dinámico contra la app desplegada)
