@@ -35,7 +35,7 @@ pipeline {
                 // Verifica el Pipfile y lista las dependencias instaladas
                 bat 'docker run --rm %APP_NAME% pip list'
                 // Audita vulnerabilidades conocidas (CVEs) en las dependencias
-                bat 'docker run --rm %APP_NAME% pip-audit -r requirements.txt || exit 0'
+                bat 'docker run --rm %APP_NAME% pip-audit || exit 0'
             }
         }
 
