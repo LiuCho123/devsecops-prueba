@@ -19,23 +19,20 @@ pipeline {
             }
         }
 
-        stage('Analyze') {
+        stage('Generate Documentation') {
             steps {
-                script {
-                    def scannerHome = tool 'SonarScanner'
-                    withSonarQubeEnv('SonarQube') {
-                        bat "\"${scannerHome}\\bin\\sonar-scanner.bat\" -Dsonar.projectKey=devsecops-app -Dsonar.sources=."
-                    }
-                }
+                // Ejecuta Doxygen y guarda la carpeta docs/ en el workspace de Jenkins
+                bat 'docker run --rm -v "%CD%":/app %APP_NAME% doxygen Doxyfile'
             }
         }
 
-        stage('Dependency Management') {
+        stage('Version Control') {
             steps {
-                // Verifica el Pipfile y lista las dependencias instaladas
-                bat 'docker run --rm %APP_NAME% pip list'
-                // Audita vulnerabilidades conocidas (CVEs) en las dependencias
-                bat 'docker run --rm %APP_NAME% pip-audit || exit 0'
+                bat 'git config user.name "Jenkins CI"'
+                bat 'git config user.email "jenkins@local"'
+                bat 'git add docs/'
+                bat 'git commit -m "Actualizar documentacion generada por Doxygen" || exit 0'
+                bat 'git status'
             }
         }
 
